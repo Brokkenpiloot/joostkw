@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,9 +12,23 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0a0f",
+};
+
 export const metadata: Metadata = {
   title: "Joost Kaan",
   description: "Personal website of Joost Kaan",
+  openGraph: {
+    title: "Joost Kaan",
+    description: "Personal website of Joost Kaan",
+    url: "https://joostkw.nl",
+    siteName: "Joost Kaan",
+    locale: "nl_NL",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -25,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="nl" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0f] text-zinc-200`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-zinc-200`}
       >
         {children}
       </body>

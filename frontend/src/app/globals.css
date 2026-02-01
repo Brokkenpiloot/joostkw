@@ -12,6 +12,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-neon-cyan: var(--neon-cyan);
+  --color-neon-magenta: var(--neon-magenta);
+  --color-neon-green: var(--neon-green);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -21,6 +24,12 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   overflow-x: hidden;
+}
+
+/* Accessible focus ring (keyboard users) */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
 }
 
 /* Cyberpunk grid background */
@@ -33,11 +42,16 @@ body {
 
 /* Neon glow */
 .neon-text {
-  text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+  text-shadow:
+    0 0 10px var(--neon-cyan),
+    0 0 20px var(--neon-cyan),
+    0 0 40px var(--neon-cyan);
 }
 
 .neon-border {
-  box-shadow: 0 0 15px var(--neon-cyan), inset 0 0 15px rgba(0, 245, 255, 0.05);
+  box-shadow:
+    0 0 15px var(--neon-cyan),
+    inset 0 0 15px rgba(0, 245, 255, 0.05);
 }
 
 /* Scanline overlay */
@@ -58,12 +72,25 @@ body {
 
 /* Subtle flicker animation */
 @keyframes flicker {
-  0%, 100% { opacity: 1; }
-  92% { opacity: 1; }
-  93% { opacity: 0.8; }
-  94% { opacity: 1; }
-  96% { opacity: 0.9; }
-  97% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.8;
+  }
+  94% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.9;
+  }
+  97% {
+    opacity: 1;
+  }
 }
 
 .animate-flicker {
@@ -72,8 +99,17 @@ body {
 
 /* Pulse glow */
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.6; box-shadow: 0 0 20px var(--neon-cyan); }
-  50% { opacity: 1; box-shadow: 0 0 40px var(--neon-cyan), 0 0 60px rgba(0, 245, 255, 0.3); }
+  0%,
+  100% {
+    opacity: 0.6;
+    box-shadow: 0 0 20px var(--neon-cyan);
+  }
+  50% {
+    opacity: 1;
+    box-shadow:
+      0 0 40px var(--neon-cyan),
+      0 0 60px rgba(0, 245, 255, 0.3);
+  }
 }
 
 .animate-pulse-glow {
