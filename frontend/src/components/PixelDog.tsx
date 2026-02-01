@@ -85,6 +85,7 @@ const PixelDogInner = forwardRef<PixelDogHandle, object>(function PixelDogInner(
   const horizonYRef = useRef(0);
   const jumpPhaseRef = useRef(jumpPhase);
   const jumpCompleteCallbackRef = useRef<(() => void) | null>(null);
+  const hasInitializedPositionRef = useRef(false);
   horizonYRef.current = horizonY;
   jumpPhaseRef.current = jumpPhase;
 
@@ -119,37 +120,55 @@ const PixelDogInner = forwardRef<PixelDogHandle, object>(function PixelDogInner(
     return () => window.removeEventListener("resize", updateHorizon);
   }, [updateHorizon]);
 
+  const updatePosition = useCallback((x: number) => {
+    setVisible(true);
+    const clampedX = x + OFFSET_X;
+    setMouseX(clampedX);
+    if (clampedX < prevMouseXRef.current) setDirection("left");
+    else if (clampedX > prevMouseXRef.current) setDirection("right");
+    prevMouseXRef.current = clampedX;
+    setMoving(true);
+    if (movingIdleRef.current) clearTimeout(movingIdleRef.current);
+    movingIdleRef.current = setTimeout(() => {
+      setMoving(false);
+      movingIdleRef.current = null;
+    }, MOVING_IDLE_MS);
+  }, []);
+
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
-      setVisible(true);
-      const x = e.clientX + OFFSET_X;
-      setMouseX(x);
-      if (x < prevMouseXRef.current) setDirection("left");
-      else if (x > prevMouseXRef.current) setDirection("right");
-      prevMouseXRef.current = x;
-
-      setMoving(true);
-      if (movingIdleRef.current) clearTimeout(movingIdleRef.current);
-      movingIdleRef.current = setTimeout(() => {
-        setMoving(false);
-        movingIdleRef.current = null;
-      }, MOVING_IDLE_MS);
+      updatePosition(e.clientX);
+    };
+    const handleTouch = (e: TouchEvent) => {
+      if (e.touches.length > 0) updatePosition(e.touches[0].clientX);
     };
     window.addEventListener("mousemove", handleMove);
+    window.addEventListener("touchmove", handleTouch, { passive: true });
+    window.addEventListener("touchstart", handleTouch, { passive: true });
     return () => {
       window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("touchmove", handleTouch);
+      window.removeEventListener("touchstart", handleTouch);
       if (movingIdleRef.current) clearTimeout(movingIdleRef.current);
     };
-  }, []);
+  }, [updatePosition]);
 
   useEffect(() => {
     if (horizonY === 0) return;
     setDogY(horizonY);
+    if (!hasInitializedPositionRef.current) {
+      hasInitializedPositionRef.current = true;
+      setVisible(true);
+      setMouseX(Math.round(window.innerWidth / 2) + OFFSET_X);
+      prevMouseXRef.current = Math.round(window.innerWidth / 2) + OFFSET_X;
+    }
   }, [horizonY]);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (horizonYRef.current === 0) return;
+      setMouseX(e.clientX + OFFSET_X);
+      prevMouseXRef.current = e.clientX + OFFSET_X;
       if (jumpPhaseRef.current !== "idle") return;
       if (lookUpTimeoutRef.current) clearTimeout(lookUpTimeoutRef.current);
 
@@ -211,10 +230,14 @@ const PixelDogInner = forwardRef<PixelDogHandle, object>(function PixelDogInner(
       />
 
       <div
-        className="pointer-events-none fixed z-[9999] transition-[top] ease-out"
+        className="pointer-events-none fixed z-[9999] flex items-center justify-center transition-[top] ease-out"
         style={{
           left: mouseX,
           top: dogY,
+          width: DOG_SIZE,
+          height: DOG_SIZE,
+          minWidth: DOG_SIZE,
+          minHeight: DOG_SIZE,
           transform: "translate(-50%, -50%)",
           transitionDuration: `${transitionDurationMs}ms`,
           transitionTimingFunction: transitionTiming,

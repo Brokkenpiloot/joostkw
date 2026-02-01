@@ -1,4 +1,4 @@
-import { SITE_URL, TECH_SOCIOLOGIST_TAG, VERSION } from "@/lib/constants";
+import { LINKEDIN_URL, SITE_URL, TECH_SOCIOLOGIST_TAG, VERSION } from "@/lib/constants";
 import { CornerAccents } from "@/components/CornerAccents";
 import { PhotoFrame } from "@/components/PhotoFrame";
 import { ReturnHomeButton } from "@/components/ReturnHomeButton";
@@ -29,7 +29,19 @@ export default function TechSociologistPage() {
           </header>
 
           <section aria-label="Under construction message">
-            <UnderConstructionMessage />
+            <UnderConstructionMessage
+              message="Sociologist specialised in societal implications of technological paradigm shifts. Now, in the AI-era, I lead teams to maximize their impact as a dev advocate and team/product lead. Add me on LinkedIn so we can chat about what I can do for your company!"
+              footer={
+                <a
+                  href={LINKEDIN_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="focus-ring text-neon-cyan underline underline-offset-2 outline-none hover:text-neon-cyan/90"
+                >
+                  {LINKEDIN_URL}
+                </a>
+              }
+            />
           </section>
 
           <div

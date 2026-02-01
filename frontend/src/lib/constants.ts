@@ -15,3 +15,6 @@ export const COMING_SOON_LABEL = "[Estimated time of completion: 1st of March]";
 
 /** Tech Sociologist page subtitle. */
 export const TECH_SOCIOLOGIST_TAG = "Tech Sociologist and AI Advocate";
+
+/** LinkedIn profile URL. */
+export const LINKEDIN_URL = "https://www.linkedin.com/in/joost-kaan/";

@@ -17,11 +17,16 @@ export default function Home() {
         <StatusLine />
 
         <div className="flex max-w-2xl flex-col items-center gap-10 text-center">
-          <div className="relative inline-block">
-            <div className="absolute right-full top-1/2 mr-[25vw] -translate-y-1/2">
-              <NavButtonTechSociologist />
+          <div className="flex min-w-0 flex-row flex-nowrap items-center justify-center gap-2 px-2 sm:gap-4 sm:px-4 md:gap-6 md:px-6">
+            <div className="shrink-0">
+              <NavButtonTechSociologist label="Tech Sociologist" />
             </div>
-            <PhotoFrame />
+            <div className="aspect-square w-[max(3.5rem,min(14rem,calc(100vw-20rem)))] shrink-0 overflow-hidden">
+              <PhotoFrame fillContainer />
+            </div>
+            <div className="shrink-0">
+              <NavButtonTechSociologist label="AI Advocate" />
+            </div>
           </div>
 
           <header className="space-y-2">
