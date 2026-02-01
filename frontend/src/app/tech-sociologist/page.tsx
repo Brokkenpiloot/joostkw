@@ -1,11 +1,11 @@
-import { SITE_URL, UNDER_CONSTRUCTION_TAG, VERSION } from "@/lib/constants";
+import { SITE_URL, TECH_SOCIOLOGIST_TAG, VERSION } from "@/lib/constants";
 import { CornerAccents } from "@/components/CornerAccents";
-import { NavButtonTechSociologist } from "@/components/NavButtonTechSociologist";
 import { PhotoFrame } from "@/components/PhotoFrame";
+import { ReturnHomeButton } from "@/components/ReturnHomeButton";
 import { StatusLine } from "@/components/StatusLine";
 import { UnderConstructionMessage } from "@/components/UnderConstructionMessage";
 
-export default function Home() {
+export default function TechSociologistPage() {
   return (
     <div className="cyber-grid scanlines min-h-screen bg-background text-zinc-200">
       <CornerAccents />
@@ -17,19 +17,14 @@ export default function Home() {
         <StatusLine />
 
         <div className="flex max-w-2xl flex-col items-center gap-10 text-center">
-          <div className="relative inline-block">
-            <div className="absolute right-full top-1/2 mr-[25vw] -translate-y-1/2">
-              <NavButtonTechSociologist />
-            </div>
-            <PhotoFrame />
-          </div>
+          <PhotoFrame />
 
           <header className="space-y-2">
             <h1 className="font-mono text-2xl font-bold tracking-[0.3em] text-neon-cyan sm:text-3xl neon-text">
               JOOST KAAN
             </h1>
             <p className="font-mono text-sm tracking-widest text-neon-magenta/90">
-              {UNDER_CONSTRUCTION_TAG}
+              {TECH_SOCIOLOGIST_TAG}
             </p>
           </header>
 
@@ -42,6 +37,8 @@ export default function Home() {
             aria-hidden
           />
         </div>
+
+        <ReturnHomeButton />
 
         <p className="absolute bottom-6 font-mono text-xs text-zinc-600">
           {SITE_URL} · {VERSION}

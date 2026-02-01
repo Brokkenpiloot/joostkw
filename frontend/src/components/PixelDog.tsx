@@ -1,7 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+
+export type PixelDogHandle = {
+  triggerJumpThen: (targetY: number, onComplete: () => void) => void;
+};
 
 const DOG_SIZE = 120;
 const OFFSET_X = 16;
@@ -57,7 +68,10 @@ function DogSprite({
   );
 }
 
-export function PixelDog() {
+const PixelDogInner = forwardRef<PixelDogHandle, object>(function PixelDogInner(
+  _,
+  ref,
+) {
   const [mouseX, setMouseX] = useState(0);
   const [dogY, setDogY] = useState(0);
   const [horizonY, setHorizonY] = useState(0);
@@ -70,8 +84,30 @@ export function PixelDog() {
   const prevMouseXRef = useRef(0);
   const horizonYRef = useRef(0);
   const jumpPhaseRef = useRef(jumpPhase);
+  const jumpCompleteCallbackRef = useRef<(() => void) | null>(null);
   horizonYRef.current = horizonY;
   jumpPhaseRef.current = jumpPhase;
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      triggerJumpThen(targetY: number, onComplete: () => void) {
+        if (jumpPhaseRef.current !== "idle") return;
+        if (horizonYRef.current === 0) return;
+        if (lookUpTimeoutRef.current) clearTimeout(lookUpTimeoutRef.current);
+        jumpCompleteCallbackRef.current = onComplete;
+        setVisible(true);
+        setJumpPhase("look-up");
+        setDogY(horizonYRef.current);
+        lookUpTimeoutRef.current = setTimeout(() => {
+          lookUpTimeoutRef.current = null;
+          setJumpPhase("jump-up");
+          setDogY(targetY);
+        }, LOOK_UP_MS);
+      },
+    }),
+    [],
+  );
 
   const updateHorizon = useCallback(() => {
     setHorizonY(window.innerHeight * (HORIZON_VH / 100));
@@ -143,7 +179,12 @@ export function PixelDog() {
           setDogY(horizonYRef.current);
           return "fall-down";
         }
-        if (phase === "fall-down") return "idle";
+        if (phase === "fall-down") {
+          const cb = jumpCompleteCallbackRef.current;
+          jumpCompleteCallbackRef.current = null;
+          if (cb) queueMicrotask(cb);
+          return "idle";
+        }
         return phase;
       });
     },
@@ -188,4 +229,6 @@ export function PixelDog() {
       </div>
     </>
   );
-}
+});
+
+export const PixelDog = PixelDogInner;
