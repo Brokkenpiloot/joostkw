@@ -140,7 +140,8 @@ const PixelDogInner = forwardRef<PixelDogHandle, object>(function PixelDogInner(
       updatePosition(e.clientX);
     };
     const handleTouch = (e: TouchEvent) => {
-      if (e.touches.length > 0) updatePosition(e.touches[0].clientX);
+      const touch = e.touches[0];
+      if (touch !== undefined) updatePosition(touch.clientX);
     };
     window.addEventListener("mousemove", handleMove);
     window.addEventListener("touchmove", handleTouch, { passive: true });
