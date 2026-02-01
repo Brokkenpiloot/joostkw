@@ -1,6 +1,7 @@
 import { SITE_URL, UNDER_CONSTRUCTION_TAG, VERSION } from "@/lib/constants";
 import { CornerAccents } from "@/components/CornerAccents";
 import { PhotoFrame } from "@/components/PhotoFrame";
+import { PixelDog } from "@/components/PixelDog";
 import { StatusLine } from "@/components/StatusLine";
 import { UnderConstructionMessage } from "@/components/UnderConstructionMessage";
 
@@ -8,6 +9,7 @@ export default function Home() {
   return (
     <div className="cyber-grid scanlines min-h-screen bg-background text-zinc-200">
       <CornerAccents />
+      <PixelDog />
 
       <a
         href="#main-content"
