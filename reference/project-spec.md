@@ -40,6 +40,7 @@ This document summarizes the coding best practices applied in this project. It s
 - **Focus** – interactive elements use the `.focus-ring` class (or equivalent) so keyboard focus is visible (e.g. outline in `neon-cyan`).
 - **Images** – always set a meaningful `alt` text.
 - **Decorative** elements use `aria-hidden` where appropriate.
+- **Sprite padding check** – whenever adding or updating any sprite image, run the padding scan on the **new asset only** (e.g. `node scripts/scan-and-trim-sprites.mjs public/Sprites/dog.png`) and ensure no transparent padding remains. This avoids layout drift without scanning all sprites.
 
 ---
 
